@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://mohot:mohot@db:5432/ecomsaas
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: mohot
+      POSTGRES_PASSWORD: mohot
+      POSTGRES_DB: ecomsaas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
